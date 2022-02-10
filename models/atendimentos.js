@@ -102,17 +102,15 @@ class Atendimento {
             //Uso a posição [0], porque a busca no banco devolve um array, como buscamos por id, sempre será um array de uma posição só
             const atendimento = result.rows[0];
 
-            atendimento.cliente = JSON.parse(atendimento.cliente);
+            if (atendimento) {
 
-            console.log(atendimento.cliente.nome);
+                atendimento.cliente = JSON.parse(atendimento.cliente);
+                result.rows.length == 1 ? res.json(atendimento) : res.send("Id não encontrado");
 
-            if (erro) {
-                res.status(400).json(erro);
             } else {
 
-                result.rows.length == 1 ? res.json(atendimento) : res.send("Id não encontrado");
+                res.status(400).send("Id não encontrado")
             }
-
         })
     }
 
