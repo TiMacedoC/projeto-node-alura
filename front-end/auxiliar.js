@@ -4,7 +4,7 @@ function adicionaZero(num) {
 
 function desenhaLista(res) {
 
-    eraseAll();
+    document.querySelector(".emptyList").innerHTML = "";
 
     document.querySelector(".listaDeAgendamentos").innerHTML = `
     <tr>
@@ -56,7 +56,7 @@ function drawSearchBox() {
     `
 }
 
-async function trySearchForId(terms, baseUrl) {
+async function searchForId(terms, baseUrl) {
 
     const id = terms;
 
@@ -77,9 +77,54 @@ async function trySearchForId(terms, baseUrl) {
     }
 }
 
+async function searchByKeyword(terms) {
+
+    const url = baseUrl;
+    const res = await fetch(url).then((res) => {
+        return res.json()
+    });
+
+    function filtering(atendimento) {
+
+        for (let i in atendimento) {
+            terms = terms.toLowerCase();
+
+            if (i == "cliente") {
+
+                for (let j in atendimento[i]) {
+                    let emTexto = atendimento[i][j].toString().toLowerCase();
+                    if (emTexto.includes(terms)) {
+
+                        console.log(atendimento)
+                        return atendimento
+                    }
+                }
+            }
+
+            let emTexto = atendimento[i].toString().toLowerCase();
+
+            if (emTexto.includes(terms)) {
+                console.log(atendimento)
+                return atendimento
+            }
+        }
+    }
+
+
+    const resultado = res.filter(filtering);
+
+    if (resultado.length == 0) {
+        return 400;
+    } else {
+        return resultado;
+    }
+
+}
+
 function drawEmptyList() {
 
-    eraseAll()
+    document.querySelector(".listaDeAgendamentos").innerHTML = "";
+
     document.querySelector(".emptyList").innerHTML = `
         <img id="emptyImage" src="images/no-data.svg" alt="duas pranchetas vazias">
         <p>Nenhum agendamento encontrado!</p>
@@ -89,6 +134,6 @@ function drawEmptyList() {
 function eraseAll() {
 
     document.querySelector(".emptyList").innerHTML = "";
-    document.querySelector(".listaDeAgendamentos").innerHTML = ""
-
+    document.querySelector(".listaDeAgendamentos").innerHTML = "";
+    document.querySelector(".searchField").innerHTML = "";
 }

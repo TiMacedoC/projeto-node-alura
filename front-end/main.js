@@ -36,6 +36,7 @@ const lista = async () => {
     //Chama a função que vai mostrar na tela todos os agendamentos
     //Essa função está no arquivo auxiliar.js
     desenhaLista(res)
+
 };
 
 const apagar = async (id) => {
@@ -56,10 +57,17 @@ const search = async () => {
     const terms = document.querySelector("#searchBox").value;
 
 
-    const result = await trySearchForId(terms, baseUrl);
+    //Se o resultado da primeira pesquisa por id for 400 ele faz uma nova
+    //Se o resultado continuar 400 ele imprime a tela de vazio, senão ele imprime com o resultado da segunda pesquisa;
+    const result = await searchForId(terms, baseUrl);
 
     if (result == 400) {
-        drawEmptyList()
+        let result = await searchByKeyword(terms);
+        if (result == 400) {
+            drawEmptyList();
+        } else {
+            desenhaLista(result)
+        }
     } else {
         desenhaLista([result])
     }

@@ -1,0 +1,3 @@
+- implementar pesquisar por palavra chave
+- agendar um serviço
+- editar um atendimento
