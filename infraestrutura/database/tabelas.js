@@ -14,6 +14,7 @@ class Tabelas {
         CREATE TABLE IF NOT EXISTS Atendimentos (
             id serial NOT NULL PRIMARY KEY,
             cliente varchar(200) NOT NULL,
+            cpf bigint,
             pet varchar(30),
             servico varchar(30) NOT NULL,
             data timestamp NOT NULL,

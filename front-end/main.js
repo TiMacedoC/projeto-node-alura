@@ -14,7 +14,7 @@ const baseUrl = `http://localhost:3000/atendimentos/`
 function onClick() {
     switch (this.id) {
         case "post":
-            console.log(this.id, "post");
+            desenhaForm();
             break;
         case "get":
             lista();
@@ -73,11 +73,36 @@ const search = async () => {
     }
 };
 
-const agendar = () => {
+const agendar = async () => {
 
-    console.log("Entrou no agendamento")
+    const formulario = formHandle();
+
+    const header = {
+        method: "POST",
+        body: formulario,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const url = baseUrl;
+
+    const res = await fetch(url, header).then((res) => {
+        return res.json()
+    });
+
+    if (res.length) {
+        res.forEach((res) => {
+            console.log(res.mensagem)
+        })
+    } else {
+        console.log(res)
+    }
+
 
 }
+
 
 
 

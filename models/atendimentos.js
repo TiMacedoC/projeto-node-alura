@@ -1,18 +1,13 @@
 const axios = require('axios');
 const moment = require('moment');
 const conexao = require('../infraestrutura/database/conexao');
-const fakeClientGenerator = require('./fakeClientGenerator');
 
 class Atendimento {
 
     async adiciona(atendimento, res) {
 
-        const fakeClient = await fakeClientGenerator(atendimento.cliente);
-
-        console.log("retorno", fakeClient);
-
         const dataCriacao = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
-        const dataAgendamento = moment(atendimento.data, 'DD/MM/YYYY').format('YYYY-MM-DD hh:mm:ss');
+        const dataAgendamento = moment(atendimento.data).format('YYYY-MM-DD hh:mm:ss');
 
         // Checa se a data de agendamento é valida ou não
         const dataEhValida = moment(dataAgendamento).isSameOrAfter(dataCriacao);
@@ -41,6 +36,7 @@ class Atendimento {
         } else {
             const sql = `INSERT INTO atendimentos (
                 cliente,
+                cpf,
                 pet,
                 servico,
                 status,
@@ -48,10 +44,11 @@ class Atendimento {
                 datacriacao,
                 data)
              VALUES (
-                '${fakeClient}',
+                '${atendimento.cliente}',
+                '${atendimento.cpf}',
                 '${atendimento.pet}',
                 '${atendimento.servico}',
-                '${atendimento.status}',
+                'Agendado',
                 '${atendimento.observacoes}',
                 '${dataCriacao}',
                 '${dataAgendamento}');`
@@ -61,7 +58,7 @@ class Atendimento {
                     res.status(400).json(erro);
                 } else {
                     res.status(201).json(
-                        { fakeClient, ...atendimento, dataCriacao }
+                        { ...atendimento, dataCriacao }
                     );
                 }
             });
@@ -82,8 +79,6 @@ class Atendimento {
                 let colunas = [];
 
                 result.rows.forEach((row) => {
-                    row.cliente = JSON.parse(row.cliente);
-
                     colunas.push(row)
                 });
 
@@ -104,7 +99,6 @@ class Atendimento {
 
             if (atendimento) {
 
-                atendimento.cliente = JSON.parse(atendimento.cliente);
                 result.rows.length == 1 ? res.json(atendimento) : res.send("Id não encontrado");
 
             } else {
