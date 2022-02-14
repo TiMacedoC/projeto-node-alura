@@ -73,6 +73,12 @@ const search = async () => {
     }
 };
 
+const agendar = () => {
+
+    console.log("Entrou no agendamento")
+
+}
+
 
 
 
