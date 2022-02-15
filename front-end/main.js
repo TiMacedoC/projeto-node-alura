@@ -59,7 +59,7 @@ const search = async () => {
 
     //Se o resultado da primeira pesquisa por id for 400 ele faz uma nova
     //Se o resultado continuar 400 ele imprime a tela de vazio, senão ele imprime com o resultado da segunda pesquisa;
-    const result = await searchForId(terms, baseUrl);
+    const result = await searchForId(terms);
 
     if (result == 400) {
         let result = await searchByKeyword(terms);
@@ -76,6 +76,8 @@ const search = async () => {
 const agendar = async () => {
 
     const formulario = formHandle();
+    console.log('formulario:', formulario)
+
 
     const header = {
         method: "POST",

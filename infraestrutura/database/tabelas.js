@@ -17,7 +17,7 @@ class Tabelas {
             cpf bigint,
             pet varchar(30),
             servico varchar(30) NOT NULL,
-            data timestamp NOT NULL,
+            data varchar(30) NOT NULL,
             dataCriacao timestamp NOT NULL,
             status varchar(20) NOT NULL,
             observacoes text

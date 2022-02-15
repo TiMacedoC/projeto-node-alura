@@ -7,7 +7,7 @@ class Atendimento {
     async adiciona(atendimento, res) {
 
         const dataCriacao = moment(new Date()).format('YYYY-MM-DD hh:mm:ss');
-        const dataAgendamento = moment(atendimento.data).format('YYYY-MM-DD hh:mm:ss');
+        var dataAgendamento = moment(atendimento.data).format('YYYY-MM-DD hh:mm:ss');
 
         // Checa se a data de agendamento é valida ou não
         const dataEhValida = moment(dataAgendamento).isSameOrAfter(dataCriacao);
@@ -30,6 +30,8 @@ class Atendimento {
 
         const erros = validacoes.filter(campo => !campo.valido);
         const existemErros = erros.length;
+
+        dataAgendamento = atendimento.data + ":00";
 
         if (existemErros) {
             res.status(400).json(erros);

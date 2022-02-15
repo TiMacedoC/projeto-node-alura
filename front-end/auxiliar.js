@@ -1,4 +1,5 @@
-function adicionaZero(num) {
+function adicionaZero(num, aux) {
+    num = num + aux;
     return num > 9 ? num : "0" + num;
 }
 
@@ -20,10 +21,11 @@ function desenhaLista(res) {
 
     res.forEach((agendamento) => {
 
-        console.log(agendamento);
+        console.log(agendamento.data);
+
 
         const date = new Date(agendamento.data);
-        const parseDate = `${date.getDate()}/${adicionaZero(date.getMonth())}/${date.getFullYear()}`
+        const parseDate = `${date.getDate()}/${adicionaZero(date.getMonth(), 1)}/${date.getFullYear()}`
 
 
         document.querySelector(".listaDeAgendamentos").innerHTML += `
@@ -36,7 +38,13 @@ function desenhaLista(res) {
                         alt="botão de delete"
                         onclick="apagar(${agendamento.id})"
                     >
-                    <img src="images/edit-icon.png" class="optionButtons" id="edit" alt="">
+                    <img 
+                        src="images/edit-icon.png"
+                        class="optionButtons"
+                        id="edit"
+                        alt="botão de editar"
+                        onclick="desenhaEditForm(${agendamento.id})"    
+                    >
                 </td>
                 <td>${agendamento.cliente}</td>
                 <td>${agendamento.pet}</td>
@@ -60,7 +68,7 @@ function drawSearchBox() {
     `
 }
 
-async function searchForId(terms, baseUrl) {
+async function searchForId(terms) {
 
     const id = terms;
 
@@ -128,8 +136,9 @@ function eraseAll() {
     document.querySelector(".emptyList").innerHTML = "";
     document.querySelector(".listaDeAgendamentos").innerHTML = "";
     document.querySelector(".searchField").innerHTML = "";
-}
+    document.querySelector(".form").innerHTML = "";
 
+}
 
 function desenhaForm() {
 
@@ -172,6 +181,54 @@ function desenhaForm() {
     `;
 }
 
+async function desenhaEditForm(agendamento) {
+
+    const atendimento = await searchForId(agendamento)
+    console.log('atendimento:', atendimento)
+
+    document.querySelector(".form").innerHTML = `
+        <h3>Cadastrar novo Agendamento</h3>
+
+        <div class="formField">
+            <label class="inputLabels" for="cliente">Nome: </label>
+            <input class="inputField" type="text" id="cliente" value="${atendimento.cliente}">
+        </div>
+
+        <div class="formField">
+            <label class="inputLabels" for="cpf">CPF:</label>
+            <input class="inputField" type="number" id="cpf" value="${atendimento.cpf}">
+        </div>
+
+        <div class="formField">
+            <label class="inputLabels" for="pet">Pet: </label>
+            <input class="inputField" type="text" id="pet" value="${atendimento.pet}">
+        </div>
+
+        <div class="formField">
+            <label class="inputLabels" for="servico">Serviço: </label>
+            <input class="inputField" type="text" id="servico" value="${atendimento.servico}">
+        </div>
+
+        <div class="formField">
+            <label class="inputLabels" for="observacoes">Observações</label>
+            <input class="inputField" type="text" id="observacoes" value="${atendimento.observacoes}">
+        </div>
+
+        <div class="formField">
+            <label class="inputLabels" for="data">Data: </label>
+            <input class="inputField" type="datetime-local" id="data" 
+            value="${atendimento.data}">
+        </div>
+
+        <div class="formField">
+            <label class="inputLabels" for="status">Data: </label>
+            <input class="inputField" type="text" id="status" value="${atendimento.status}">
+        </div>
+
+        <input class="button" type="submit" name="enviar" value="Enviar" id="enviar">
+    `;
+}
+
 function formHandle() {
 
     const values = document.querySelectorAll(".inputField")
@@ -179,10 +236,9 @@ function formHandle() {
     var str = {};
 
     values.forEach((value) => {
+
         str[value.id] = value.value;
     })
-
-    console.log(str);
 
     const finalForm = JSON.stringify(str)
 
