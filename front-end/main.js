@@ -105,6 +105,28 @@ const agendar = async () => {
 
 }
 
+const alterar = async (id) => {
+
+    const formulario = formHandle();
+
+    const url = baseUrl + id
+
+    const header = {
+        method: "PATCH",
+        body: formulario,
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }
+
+    const res = await fetch(url, header).then((res) => {
+        return res.json()
+    });
+
+    console.log(res);
+
+}
 
 
 

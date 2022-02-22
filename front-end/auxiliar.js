@@ -25,8 +25,10 @@ function desenhaLista(res) {
 
 
         const date = new Date(agendamento.data);
-        const parseDate = `${date.getDate()}/${adicionaZero(date.getMonth(), 1)}/${date.getFullYear()}`
 
+        console.log(date);
+
+        const parseDate = `${date.getDate()}/${adicionaZero(date.getMonth(), 1)}/${date.getFullYear()}`
 
         document.querySelector(".listaDeAgendamentos").innerHTML += `
             <tr>
@@ -145,87 +147,95 @@ function desenhaForm() {
     eraseAll();
 
     document.querySelector(".form").innerHTML = `
-        <h3>Cadastrar novo Agendamento</h3>
-
-        <div class="formField">
-            <label class="inputLabels" for="cliente">Nome: </label>
-            <input class="inputField" type="text" id="cliente">
-        </div>
-
-        <div class="formField">
-            <label class="inputLabels" for="cpf">CPF:</label>
-            <input class="inputField" type="number" id="cpf">
-        </div>
-
-        <div class="formField">
-            <label class="inputLabels" for="pet">Pet: </label>
-            <input class="inputField" type="text" id="pet">
-        </div>
-
-        <div class="formField">
-            <label class="inputLabels" for="servico">Serviço: </label>
-            <input class="inputField" type="text" id="servico">
-        </div>
-
-        <div class="formField">
-            <label class="inputLabels" for="observacoes">Observações</label>
-            <input class="inputField" type="text" id="observacoes">
-        </div>
-
-        <div class="formField">
-            <label class="inputLabels" for="data">Data: </label>
-            <input class="inputField" type="datetime-local" id="data">
-        </div>
-
-        <input class="button" type="submit" name="enviar" value="Enviar" id="enviar">
+        <form action="javascript:agendar()" method="post" autocomplete="off">
+        
+            <h3>Cadastrar novo Agendamento</h3>
+        
+            <div class="formField">
+                <label class="inputLabels" for="cliente">Nome: </label>
+                <input class="inputField" type="text" id="cliente">
+            </div>
+        
+            <div class="formField">
+                <label class="inputLabels" for="cpf">CPF:</label>
+                <input class="inputField" type="number" id="cpf">
+            </div>
+        
+            <div class="formField">
+                <label class="inputLabels" for="pet">Pet: </label>
+                <input class="inputField" type="text" id="pet">
+            </div>
+        
+            <div class="formField">
+                <label class="inputLabels" for="servico">Serviço: </label>
+                <input class="inputField" type="text" id="servico">
+            </div>
+        
+            <div class="formField">
+                <label class="inputLabels" for="observacoes">Observações</label>
+                <input class="inputField" type="text" id="observacoes">
+            </div>
+        
+            <div class="formField">
+                <label class="inputLabels" for="data">Data: </label>
+                <input class="inputField" type="datetime-local" id="data">
+            </div>
+        
+            <input class="button" type="submit" name="enviar" value="Enviar" id="enviar">
+        </form>
     `;
 }
 
 async function desenhaEditForm(agendamento) {
 
+    eraseAll();
+
     const atendimento = await searchForId(agendamento)
     console.log('atendimento:', atendimento)
 
     document.querySelector(".form").innerHTML = `
-        <h3>Cadastrar novo Agendamento</h3>
+         <form action="javascript:alterar(${atendimento.id})" method="post" autocomplete="off">
 
-        <div class="formField">
-            <label class="inputLabels" for="cliente">Nome: </label>
-            <input class="inputField" type="text" id="cliente" value="${atendimento.cliente}">
-        </div>
+            <h3>Cadastrar novo Agendamento</h3>
 
-        <div class="formField">
-            <label class="inputLabels" for="cpf">CPF:</label>
-            <input class="inputField" type="number" id="cpf" value="${atendimento.cpf}">
-        </div>
+            <div class="formField">
+                <label class="inputLabels" for="cliente">Nome: </label>
+                <input class="inputField" type="text" id="cliente" value="${atendimento.cliente}">
+            </div>
 
-        <div class="formField">
-            <label class="inputLabels" for="pet">Pet: </label>
-            <input class="inputField" type="text" id="pet" value="${atendimento.pet}">
-        </div>
+            <div class="formField">
+                <label class="inputLabels" for="cpf">CPF:</label>
+                <input class="inputField" type="number" id="cpf" value="${atendimento.cpf}">
+            </div>
 
-        <div class="formField">
-            <label class="inputLabels" for="servico">Serviço: </label>
-            <input class="inputField" type="text" id="servico" value="${atendimento.servico}">
-        </div>
+            <div class="formField">
+                <label class="inputLabels" for="pet">Pet: </label>
+                <input class="inputField" type="text" id="pet" value="${atendimento.pet}">
+            </div>
 
-        <div class="formField">
-            <label class="inputLabels" for="observacoes">Observações</label>
-            <input class="inputField" type="text" id="observacoes" value="${atendimento.observacoes}">
-        </div>
+            <div class="formField">
+                <label class="inputLabels" for="servico">Serviço: </label>
+                <input class="inputField" type="text" id="servico" value="${atendimento.servico}">
+            </div>
 
-        <div class="formField">
-            <label class="inputLabels" for="data">Data: </label>
-            <input class="inputField" type="datetime-local" id="data" 
-            value="${atendimento.data}">
-        </div>
+            <div class="formField">
+                <label class="inputLabels" for="observacoes">Observações</label>
+                <input class="inputField" type="text" id="observacoes" value="${atendimento.observacoes}">
+            </div>
 
-        <div class="formField">
-            <label class="inputLabels" for="status">Data: </label>
-            <input class="inputField" type="text" id="status" value="${atendimento.status}">
-        </div>
+            <div class="formField">
+                <label class="inputLabels" for="data">Data: </label>
+                <input class="inputField" type="datetime-local" id="data" 
+                value="${atendimento.data}">
+            </div>
 
-        <input class="button" type="submit" name="enviar" value="Enviar" id="enviar">
+            <div class="formField">
+                <label class="inputLabels" for="status">Status: </label>
+                <input class="inputField" type="text" id="status" value="${atendimento.status}">
+            </div>
+
+            <input class="button" type="submit" name="enviar" value="Enviar" id="enviar">
+        </form>
     `;
 }
 

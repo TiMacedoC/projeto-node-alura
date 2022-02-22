@@ -31,7 +31,9 @@ class Atendimento {
         const erros = validacoes.filter(campo => !campo.valido);
         const existemErros = erros.length;
 
-        dataAgendamento = atendimento.data + ":00";
+        console.log("backend", atendimento.data);
+
+        dataAgendamento = `${atendimento.data}`;
 
         if (existemErros) {
             res.status(400).json(erros);
