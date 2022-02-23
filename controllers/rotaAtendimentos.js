@@ -4,7 +4,6 @@ module.exports = (app) => {
 
     app.get('/atendimentos', (req, res) => {
 
-        const nome = undefined;
         Atendimento.lista(res);
 
     });
